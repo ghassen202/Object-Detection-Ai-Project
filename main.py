@@ -16,28 +16,24 @@ net = cv2.dnn.readNetFromCaffe(prototxt_path, model_path)
 #image = cv2.imread(image_path)
 cap = cv2.VideoCapture(0)
 while True:
+############### Block instead of blob = cv2.dnn.blobFromImage(cv2.resize(image,(300,300),0.007,(300,300),130) ################
     _,image = cap.read()
     height, width =image.shape[0], image.shape[1]
     # Define the input shape of the network
     input_shape = (300, 300)
-
     # Resize the image to the input shape
     resized_image = cv2.resize(image, input_shape)
-
     # Subtract the mean values of the dataset from the image
     mean = (104, 117, 123) # Mean values for MobileNet SSD
     mean_subtracted_image = resized_image - mean
-
     # Scale the pixel values to the range [-1, 1]
     scaled_image = mean_subtracted_image / 127.5
     scaled_image -= 1.0
-
     # Transpose the dimensions of the image to match the network's input shape
     transposed_image = np.transpose(scaled_image, (2, 0, 1))
-
     # Reshape the image to a 4D blob
     blob = np.expand_dims(transposed_image, axis=0)
-
+##################################################################################################################################
 
     # Set the input to the network
     net.setInput(blob)
